@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisa Bisnis Mandiri</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container-main {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 15px;
+        }
+        .card-custom {
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border: none;
+            overflow: hidden;
+        }
+        .card-header-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border: none;
+        }
+        .section-card {
+            border-left: 4px solid #667eea;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        .btn-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 40px;
+            color: white;
+            font-weight: 600;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        .progress-bar-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            padding: 12px;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .result-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            gap: 5px;
+        }
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            min-width: 60px;
+        }
+        .step small {
+            font-size: 0.7rem;
+        }
+        @media (max-width: 576px) {
+            .step small {
+                font-size: 0.6rem;
+            }
+            .step-circle {
+                width: 25px;
+                height: 25px;
+                font-size: 0.8rem;
+            }
+            .container-main {
+                margin: 20px auto;
+            }
+            .card-header-custom {
+                padding: 20px 15px;
+            }
+            .card-header-custom h2 {
+                font-size: 1.5rem;
+            }
+            .card-body {
+                padding: 15px !important;
+            }
+            .btn-custom, .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .step.active .step-circle {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .step.completed .step-circle {
+            background: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-main">
+        <div class="card card-custom">
+            <div class="card-header-custom text-center">
+                <h2><i class="fas fa-chart-line me-2"></i>Analisa Bisnis Mandiri</h2>
+                <p class="mb-0">Evaluasi dan tingkatkan bisnis Anda secara sistematis</p>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-4">
+                    <div class="progress" style="height: 8px; border-radius: 10px;">
+                        <div class="progress-bar progress-bar-custom" id="progressBar" style="width: 0%"></div>
+                    </div>
+                    <small class="text-muted mt-2 d-block text-center">Progress: <span id="progressText">0%</span></small>
+                </div>
+
+                <div class="step-indicator mb-4">
+                    <div class="step active" id="step1">
+                        <div class="step-circle">1</div>
+                        <div><small>Info</small></div>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-circle">2</div>
+                        <div><small>Produk</small></div>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-circle">3</div>
+                        <div><small>Customer</small></div>
+                    </div>
+                    <div class="step" id="step4">
+                        <div class="step-circle">4</div>
+                        <div><small>Kompetitor</small></div>
+                    </div>
+                    <div class="step" id="step5">
+                        <div class="step-circle">5</div>
+                        <div><small>Target</small></div>
+                    </div>
+                </div>
+
+                <!-- Section 1 -->
+                <div id="section1" class="section">
+                    <div class="section-card card">
+                        <div class="card-body">
+                            <h4 class="mb-4"><i class="fas fa-building text-primary me-2"></i>Informasi Bisnis & Data 2025</h4>
+                            
+                            <div class="mb-4">
+                                <label class="form-label">Nama Bisnis / Perusahaan</label>
+                                <input type="text" class="form-control" id="businessName" placeholder="Masukkan nama bisnis Anda...">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">1. Berapa persen pertumbuhan (Growth) bisnis Anda tahun ini?</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="growth" placeholder="Masukkan persentase">
+                                    <span class="input-group-text">%</span>
+                                </div>
+                                <small class="text-muted">Contoh: 15 untuk 15% pertumbuhan</small>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">2. Bagaimana performa bisnis Anda dari bulan ke bulan?</label>
+                                <select class="form-select" id="performance">
+                                    <option value="">Pilih performa...</option>
+                                    <option value="meningkat-signifikan">Meningkat Signifikan (>20%)</option>
+                                    <option value="meningkat-stabil">Meningkat Stabil (10-20%)</option>
+                                    <option value="stabil">Stabil (±10%)</option>
+                                    <option value="menurun-sedikit">Menurun Sedikit (-10 s/d -20%)</option>
+                                    <option value="menurun-signifikan">Menurun Signifikan (<-20%)</option>
+                                    <option value="fluktuatif">Fluktuatif</option>
+                                </select>
+                            </div>
+
+                            <button class="btn btn-custom" onclick="gotoSection2()">Lanjut <i class="fas fa-arrow-right ms-2"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2 -->
+                <div id="section2" class="section" style="display: none;">
+                    <div class="section-card card">
+                        <div class="card-body">
+                            <h4 class="mb-4"><i class="fas fa-box text-success me-2"></i>Data Produk / Layanan</h4>
+                            
+                            <div class="mb-4">
+                                <label class="form-label">3. Produk/Layanan apa yang paling laku?</label>
+                                <textarea class="form-control" id="bestSelling" rows="3" placeholder="Sebutkan produk/layanan terlaris Anda..."></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">4. Produk/Layanan apa yang tidak laku?</label>
+                                <textarea class="form-control" id="notSelling" rows="3" placeholder="Sebutkan produk/layanan yang kurang laku..."></textarea>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-secondary" onclick="gotoSection1()"><i class="fas fa-arrow-left me-2"></i>Kembali</button>
+                                <button class="btn btn-custom" onclick="gotoSection3()">Lanjut <i class="fas fa-arrow-right ms-2"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3 -->
+                <div id="section3" class="section" style="display: none;">
+                    <div class="section-card card">
+                        <div class="card-body">
+                            <h4 class="mb-4"><i class="fas fa-users text-info me-2"></i>Data Customer</h4>
+                            
+                            <div class="mb-4">
+                                <label class="form-label">5. Target Market mana yang paling banyak membeli?</label>
+                                <textarea class="form-control" id="targetMarketBest" rows="3" placeholder="Contoh: Ibu rumah tangga usia 30-45 tahun..."></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">6. Target Market mana yang medium (sedang)?</label>
+                                <textarea class="form-control" id="targetMarketMedium" rows="3" placeholder="Sebutkan segmen customer sedang..."></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">7. Target Market mana yang sedikit membeli?</label>
+                                <textarea class="form-control" id="targetMarketLow" rows="3" placeholder="Sebutkan segmen customer rendah..."></textarea>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-secondary" onclick="gotoSection2()"><i class="fas fa-arrow-left me-2"></i>Kembali</button>
+                                <button class="btn btn-custom" onclick="gotoSection4()">Lanjut <i class="fas fa-arrow-right ms-2"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4 -->
+                <div id="section4" class="section" style="display: none;">
+                    <div class="section-card card">
+                        <div class="card-body">
+                            <h4 class="mb-4"><i class="fas fa-trophy text-warning me-2"></i>Analisa Kompetitor</h4>
+                            
+                            <div class="mb-4">
+                                <label class="form-label">8. Apa kekuatan (Strength) bisnis Anda?</label>
+                                <textarea class="form-control" id="strength" rows="3" placeholder="Contoh: Harga lebih murah, kualitas baik..."></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">9. Apa kelemahan (Weakness) bisnis Anda?</label>
+                                <textarea class="form-control" id="weakness" rows="3" placeholder="Contoh: Lokasi kurang strategis..."></textarea>
+                            </div>
+
+                            <h5 class="mt-4 mb-3">Marketing Mix (4P)</h5>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Place</label>
+                                <textarea class="form-control" id="place" rows="2" placeholder="Online/offline?"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Product</label>
+                                <textarea class="form-control" id="product" rows="2" placeholder="Keunggulan produk?"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Promotion</label>
+                                <textarea class="form-control" id="promotion" rows="2" placeholder="Strategi promosi?"></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">Price</label>
+                                <textarea class="form-control" id="price" rows="2" placeholder="Strategi harga?"></textarea>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-secondary" onclick="gotoSection3()"><i class="fas fa-arrow-left me-2"></i>Kembali</button>
+                                <button class="btn btn-custom" onclick="gotoSection5()">Lanjut <i class="fas fa-arrow-right ms-2"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5 -->
+                <div id="section5" class="section" style="display: none;">
+                    <div class="section-card card">
+                        <div class="card-body">
+                            <h4 class="mb-4"><i class="fas fa-bullseye text-danger me-2"></i>Target & Strategi 2026</h4>
+                            
+                            <div class="mb-4">
+                                <label class="form-label">10. Apa target bisnis Anda untuk 2026?</label>
+                                <textarea class="form-control" id="target2026" rows="3" placeholder="Contoh: Meningkatkan omzet 50%..."></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">11. Apa strategi untuk mencapai target?</label>
+                                <textarea class="form-control" id="strategy2026" rows="4" placeholder="Jelaskan strategi konkret..."></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">12. Apa tantangan terbesar yang diprediksi?</label>
+                                <textarea class="form-control" id="challenges2026" rows="3" placeholder="Sebutkan hambatan..."></textarea>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-secondary" onclick="gotoSection4()"><i class="fas fa-arrow-left me-2"></i>Kembali</button>
+                                <button class="btn btn-success" onclick="showResults()"><i class="fas fa-chart-bar me-2"></i>Lihat Hasil</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div id="results" style="display: none;">
+                    <div class="card border-success">
+                        <div class="card-header bg-success text-white">
+                            <h4 class="mb-0"><i class="fas fa-file-alt me-2"></i>Hasil Analisa Bisnis</h4>
+                            <small>Tanggal: 15 November 2025</small>
+                        </div>
+                        <div class="card-body">
+                            <div id="analysisContent"></div>
+                            <div class="mt-4 text-center">
+                                <button class="btn btn-info me-2" onclick="window.print()"><i class="fas fa-print me-2"></i>Cetak PDF</button>
+                                <button class="btn btn-secondary" onclick="resetAll()"><i class="fas fa-redo me-2"></i>Analisa Ulang</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function updateProgress(current) {
+            const progress = ((current - 1) / 5) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = Math.round(progress) + '%';
+            
+            for (let i = 1; i <= 5; i++) {
+                const step = document.getElementById('step' + i);
+                step.classList.remove('active', 'completed');
+                if (i < current) step.classList.add('completed');
+                else if (i === current) step.classList.add('active');
+            }
+        }
+
+        function validate1() {
+            const name = document.getElementById('businessName').value.trim();
+            const growth = document.getElementById('growth').value;
+            const perf = document.getElementById('performance').value;
+            if (!name) { alert('Isi nama bisnis'); return false; }
+            if (!growth) { alert('Isi pertumbuhan'); return false; }
+            if (!perf) { alert('Pilih performa'); return false; }
+            return true;
+        }
+
+        function validate2() {
+            const best = document.getElementById('bestSelling').value.trim();
+            const not = document.getElementById('notSelling').value.trim();
+            if (!best || !not) { alert('Lengkapi data produk'); return false; }
+            return true;
+        }
+
+        function validate3() {
+            const target = document.getElementById('targetMarketBest').value.trim();
+            if (!target) { alert('Isi minimal target market terbaik'); return false; }
+            return true;
+        }
+
+        function validate4() {
+            const str = document.getElementById('strength').value.trim();
+            const weak = document.getElementById('weakness').value.trim();
+            if (!str || !weak) { alert('Isi kekuatan dan kelemahan'); return false; }
+            return true;
+        }
+
+        function gotoSection1() {
+            document.getElementById('section2').style.display = 'none';
+            document.getElementById('section1').style.display = 'block';
+            updateProgress(1);
+            window.scrollTo(0,0);
+        }
+
+        function gotoSection2() {
+            if (!validate1()) return;
+            document.getElementById('section1').style.display = 'none';
+            document.getElementById('section2').style.display = 'block';
+            updateProgress(2);
+            window.scrollTo(0,0);
+        }
+
+        function gotoSection3() {
+            if (!validate2()) return;
+            document.getElementById('section2').style.display = 'none';
+            document.getElementById('section3').style.display = 'block';
+            updateProgress(3);
+            window.scrollTo(0,0);
+        }
+
+        function gotoSection4() {
+            if (!validate3()) return;
+            document.getElementById('section3').style.display = 'none';
+            document.getElementById('section4').style.display = 'block';
+            updateProgress(4);
+            window.scrollTo(0,0);
+        }
+
+        function gotoSection5() {
+            if (!validate4()) return;
+            document.getElementById('section4').style.display = 'none';
+            document.getElementById('section5').style.display = 'block';
+            updateProgress(5);
+            window.scrollTo(0,0);
+        }
+
+        function showResults() {
+            const data = {
+                name: document.getElementById('businessName').value.trim(),
+                growth: document.getElementById('growth').value,
+                performance: document.getElementById('performance').value,
+                bestSelling: document.getElementById('bestSelling').value.trim(),
+                notSelling: document.getElementById('notSelling').value.trim(),
+                targetBest: document.getElementById('targetMarketBest').value.trim(),
+                targetMed: document.getElementById('targetMarketMedium').value.trim(),
+                targetLow: document.getElementById('targetMarketLow').value.trim(),
+                strength: document.getElementById('strength').value.trim(),
+                weakness: document.getElementById('weakness').value.trim(),
+                place: document.getElementById('place').value.trim(),
+                product: document.getElementById('product').value.trim(),
+                promotion: document.getElementById('promotion').value.trim(),
+                price: document.getElementById('price').value.trim(),
+                target2026: document.getElementById('target2026').value.trim(),
+                strategy2026: document.getElementById('strategy2026').value.trim(),
+                challenges2026: document.getElementById('challenges2026').value.trim()
+            };
+
+            const perfLabels = {
+                'meningkat-signifikan': 'Meningkat Signifikan (>20%)',
+                'meningkat-stabil': 'Meningkat Stabil (10-20%)',
+                'stabil': 'Stabil (±10%)',
+                'menurun-sedikit': 'Menurun Sedikit (-10 s/d -20%)',
+                'menurun-signifikan': 'Menurun Signifikan (<-20%)',
+                'fluktuatif': 'Fluktuatif'
+            };
+
+            let html = `
+                <div class="alert alert-primary">
+                    <h5 class="mb-0"><i class="fas fa-building me-2"></i>${data.name}</h5>
+                </div>
+
+                <div class="result-section">
+                    <h5 class="text-primary"><i class="fas fa-chart-line me-2"></i>Performa Bisnis 2025</h5>
+                    <p><strong>Pertumbuhan:</strong> ${data.growth}%</p>
+                    <p><strong>Performa:</strong> ${perfLabels[data.performance]}</p>
+                    ${getInsight(data.growth, data.performance)}
+                </div>
+
+                <div class="result-section">
+                    <h5 class="text-success"><i class="fas fa-box me-2"></i>Produk/Layanan</h5>
+                    <p><strong>Terlaris:</strong> ${data.bestSelling}</p>
+                    <p><strong>Kurang Laku:</strong> ${data.notSelling}</p>
+                    <div class="alert alert-info">
+                        <strong>💡 Insight:</strong> Produk terlaris adalah aset utama - prioritaskan stock, promosi, dan availability. 
+                        Untuk produk kurang laku: evaluasi dalam 30-60 hari, pertimbangkan bundling dengan produk laris, 
+                        improve positioning, atau discontinue jika tidak profitable.
+                    </div>
+                </div>
+
+                <div class="result-section">
+                    <h5 class="text-info"><i class="fas fa-users me-2"></i>Customer</h5>
+                    <p><strong>Target Terbaik:</strong> ${data.targetBest}</p>
+                    ${data.targetMed ? `<p><strong>Target Sedang:</strong> ${data.targetMed}</p>` : ''}
+                    ${data.targetLow ? `<p><strong>Target Rendah:</strong> ${data.targetLow}</p>` : ''}
+                    <div class="alert alert-info">
+                        <strong>💡 Insight:</strong> Alokasikan 60-70% marketing budget ke target terbaik untuk maximize ROI. 
+                        ${data.targetMed ? 'Untuk segmen medium: identifikasi friction point dan convert ke segment terbaik. ' : ''}
+                        ${data.targetLow ? 'Segmen rendah: evaluate cost vs benefit, bisa jadi tidak worth it untuk dipertahankan.' : ''}
+                    </div>
+                </div>
+
+                <div class="result-section">
+                    <h5 class="text-warning"><i class="fas fa-balance-scale me-2"></i>SWOT</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="alert alert-success">
+                                <strong>💪 Kekuatan:</strong><br>${data.strength}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-danger">
+                                <strong>⚠️ Kelemahan:</strong><br>${data.weakness}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <strong>💡 Insight:</strong> Kekuatan adalah unique selling point - komunikasikan di semua touchpoint customer. 
+                        Kelemahan adalah area improvement priority - buat action plan 30-60-90 hari dengan metric jelas dan PIC assigned.
+                    </div>
+                </div>
+
+                <div class="result-section">
+                    <h5 class="text-danger"><i class="fas fa-bullhorn me-2"></i>Marketing Mix (4P)</h5>
+                    <p><strong>Place:</strong> ${data.place || '-'}</p>
+                    <p><strong>Product:</strong> ${data.product || '-'}</p>
+                    <p><strong>Promotion:</strong> ${data.promotion || '-'}</p>
+                    <p><strong>Price:</strong> ${data.price || '-'}</p>
+                    <div class="alert alert-info">
+                        <strong>💡 Insight:</strong> 4P harus saling support. Product quality + competitive Price + right Place (distribution) + effective Promotion = winning formula. 
+                        ${data.place && data.place.toLowerCase().includes('online') ? 'Online presence bagus - optimalkan digital marketing & e-commerce.' : ''}
+                        ${data.place && data.place.toLowerCase().includes('offline') ? 'Offline presence - pastikan lokasi strategic & customer experience excellent.' : ''}
+                    </div>
+                </div>
+
+                <div class="result-section">
+                    <h5 class="text-primary"><i class="fas fa-bullseye me-2"></i>Target & Strategi 2026</h5>
+                    <p><strong>Target:</strong> ${data.target2026 || '-'}</p>
+                    <p><strong>Strategi:</strong> ${data.strategy2026 || '-'}</p>
+                    <p><strong>Tantangan:</strong> ${data.challenges2026 || '-'}</p>
+                    ${data.target2026 ? `<div class="alert alert-info">
+                        <strong>💡 Insight:</strong> Target yang clear adalah 50% dari kesuksesan. Pastikan target SMART (Specific, Measurable, Achievable, Relevant, Time-bound). 
+                        Break down ke quarterly milestone, assign PIC, dan review bi-weekly untuk ensure on track.
+                    </div>` : ''}
+                </div>
+
+                <div class="alert alert-info mt-4">
+                    <h5><i class="fas fa-lightbulb me-2"></i>Rekomendasi Aksi (Custom untuk ${data.name})</h5>
+                    ${getDynamicRecommendations(data)}
+                </div>
+
+                <div class="alert alert-dark mt-4">
+                    <h5><i class="fas fa-clipboard-check me-2"></i>Kesimpulan & Action Plan</h5>
+                    ${getDynamicConclusion(data)}
+                </div>
+            `;
+
+            document.getElementById('analysisContent').innerHTML = html;
+            document.getElementById('section5').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('progressBar').style.width = '100%';
+            document.getElementById('progressText').textContent = '100%';
+            window.scrollTo(0,0);
+        }
+
+        function getInsight(growth, performance) {
+            growth = parseFloat(growth);
+            let insight = '<div class="alert alert-';
+            let message = '';
+            
+            if (growth > 20 || performance === 'meningkat-signifikan') {
+                insight += 'success"><strong>🎉 Excellent!</strong> ';
+                message = `Dengan pertumbuhan ${growth}%, bisnis Anda sangat solid. Ini waktu yang tepat untuk:
+                <ul class="mt-2 mb-0">
+                    <li>Ekspansi ke pasar/lokasi baru</li>
+                    <li>Diversifikasi produk</li>
+                    <li>Tingkatkan kapasitas produksi</li>
+                    <li>Investasi teknologi/SDM</li>
+                </ul>`;
+            } else if (growth > 10 || performance === 'meningkat-stabil') {
+                insight += 'info"><strong>👍 Bagus!</strong> ';
+                message = `Pertumbuhan ${growth}% menunjukkan bisnis stabil. Fokus pada:
+                <ul class="mt-2 mb-0">
+                    <li>Efisiensi operasional</li>
+                    <li>Konsolidasi market share</li>
+                    <li>Peningkatan customer retention</li>
+                    <li>Optimasi profit margin</li>
+                </ul>`;
+            } else if (growth >= 0 || performance === 'stabil') {
+                insight += 'warning"><strong>⚠️ Perhatian!</strong> ';
+                message = `Pertumbuhan ${growth}% tergolong stagnan. Perlu action segera:
+                <ul class="mt-2 mb-0">
+                    <li>Inovasi produk/layanan baru</li>
+                    <li>Revitalisasi strategi marketing</li>
+                    <li>Eksplorasi market baru</li>
+                    <li>Improve customer experience</li>
+                </ul>`;
+            } else {
+                insight += 'danger"><strong>🚨 Peringatan!</strong> ';
+                message = `Penurunan ${Math.abs(growth)}% adalah sinyal kritis. Langkah darurat:
+                <ul class="mt-2 mb-0">
+                    <li>Evaluasi fundamental bisnis model</li>
+                    <li>Analisa cashflow & efisiensi biaya</li>
+                    <li>Pivot strategy atau reposisi brand</li>
+                    <li>Konsultasi dengan mentor/konsultan</li>
+                </ul>`;
+            }
+            
+            return insight + message + '</div>';
+        }
+
+        function getDynamicRecommendations(data) {
+            let recs = '<ol>';
+            const growth = parseFloat(data.growth);
+            
+            // Rekomendasi berdasar growth
+            if (growth < 10) {
+                recs += '<li><strong>Urgent:</strong> Revamp strategi marketing dan sales untuk boost pertumbuhan minimal 15%</li>';
+            } else if (growth > 30) {
+                recs += '<li><strong>Peluang:</strong> Growth tinggi = momentum ekspansi. Pertimbangkan buka cabang baru atau franchise</li>';
+            }
+            
+            // Rekomendasi produk
+            recs += `<li><strong>Produk Terlaris (${data.bestSelling.substring(0, 30)}...):</strong> Tingkatkan stok 30-50%, buat bundling, dan jadikan hero product dalam promosi</li>`;
+            
+            if (data.notSelling) {
+                recs += `<li><strong>Produk Tidak Laku:</strong> Evaluasi dalam 30 hari - improve, diskon clearance, atau discontinue untuk fokus resource</li>`;
+            }
+            
+            // Rekomendasi customer
+            recs += `<li><strong>Target Market:</strong> Alokasikan 60-70% budget marketing ke segmen terbaik (${data.targetBest.substring(0, 30)}...) untuk maximize ROI</li>`;
+            
+            // Rekomendasi SWOT
+            if (data.strength) {
+                recs += `<li><strong>Leverage Kekuatan:</strong> Jadikan "${data.strength.substring(0, 40)}..." sebagai unique selling point utama di semua channel komunikasi</li>`;
+            }
+            
+            if (data.weakness) {
+                recs += `<li><strong>Fix Kelemahan:</strong> Buat action plan 90 hari untuk atasi "${data.weakness.substring(0, 40)}..." dengan target improvement terukur</li>`;
+            }
+            
+            // Rekomendasi Marketing Mix
+            if (data.place && data.place.toLowerCase().includes('online')) {
+                recs += '<li><strong>Digital Marketing:</strong> Optimalkan SEO, social media ads, dan marketplace presence</li>';
+            } else if (data.place && data.place.toLowerCase().includes('offline')) {
+                recs += '<li><strong>Offline Strategy:</strong> Maksimalkan foot traffic dengan window display menarik dan lokasi strategis</li>';
+            }
+            
+            // Rekomendasi Target 2026
+            if (data.target2026) {
+                recs += `<li><strong>2026 Goal:</strong> Break down target menjadi milestone bulanan. Review progress setiap 2 minggu</li>`;
+            }
+            
+            recs += '<li><strong>Tracking:</strong> Setup dashboard KPI (sales, conversion, customer acquisition cost, profit margin) dan review mingguan</li>';
+            recs += '<li><strong>Team Alignment:</strong> Komunikasikan strategi ke seluruh team dan assign PIC untuk setiap action item</li>';
+            
+            recs += '</ol>';
+            return recs;
+        }
+
+        function getDynamicConclusion(data) {
+            const growth = parseFloat(data.growth);
+            let conclusion = '<div class="mt-2">';
+            
+            // Summary berdasar performa
+            conclusion += '<p><strong>📊 Executive Summary:</strong><br>';
+            if (growth > 20) {
+                conclusion += `<strong>${data.name}</strong> menunjukkan performa cemerlang dengan growth <strong>${growth}%</strong>. Bisnis dalam kondisi sangat sehat dan siap untuk fase ekspansi. `;
+            } else if (growth > 10) {
+                conclusion += `<strong>${data.name}</strong> tumbuh stabil di <strong>${growth}%</strong>. Fundamental bisnis solid, perlu optimasi untuk percepatan growth. `;
+            } else if (growth >= 0) {
+                conclusion += `<strong>${data.name}</strong> dengan growth <strong>${growth}%</strong> perlu breakthrough strategy untuk keluar dari zona stagnan. `;
+            } else {
+                conclusion += `<strong>${data.name}</strong> mengalami penurunan <strong>${Math.abs(growth)}%</strong> - situasi kritis yang membutuhkan pivot strategy segera. `;
+            }
+            conclusion += '</p>';
+            
+            // Key Findings
+            conclusion += '<p><strong>🎯 Key Findings:</strong></p><ul>';
+            conclusion += `<li><strong>Star Product:</strong> ${data.bestSelling.substring(0, 50)}${data.bestSelling.length > 50 ? '...' : ''} - ini cash cow yang harus dimaksimalkan</li>`;
+            conclusion += `<li><strong>Best Customer Segment:</strong> ${data.targetBest.substring(0, 50)}${data.targetBest.length > 50 ? '...' : ''} - fokus acquisition & retention di sini</li>`;
+            conclusion += `<li><strong>Competitive Edge:</strong> ${data.strength.substring(0, 50)}${data.strength.length > 50 ? '...' : ''} - ini differentiator Anda</li>`;
+            conclusion += `<li><strong>Main Challenge:</strong> ${data.weakness.substring(0, 50)}${data.weakness.length > 50 ? '...' : ''} - prioritas untuk diperbaiki</li>`;
+            conclusion += '</ul>';
+            
+            // Vision 2026
+            if (data.target2026) {
+                conclusion += '<p><strong>🚀 Vision 2026:</strong><br>';
+                conclusion += `Target: ${data.target2026}<br>`;
+                if (data.strategy2026) {
+                    conclusion += `Strategi: ${data.strategy2026.substring(0, 150)}${data.strategy2026.length > 150 ? '...' : ''}`;
+                }
+                conclusion += '</p>';
+            }
+            
+            // Action Priority
+            conclusion += '<p><strong>⚡ Next 30 Days Action Priority:</strong></p>';
+            conclusion += '<ol>';
+            conclusion += '<li>Setup KPI tracking dashboard</li>';
+            conclusion += '<li>Alokasi budget 70% ke produk terlaris & target market terbaik</li>';
+            if (growth < 15) {
+                conclusion += '<li>Brainstorm session untuk strategi growth acceleration</li>';
+            }
+            conclusion += '<li>Buat action plan perbaikan kelemahan utama</li>';
+            conclusion += '<li>Team meeting untuk alignment strategi 2026</li>';
+            conclusion += '</ol>';
+            
+            // Closing
+            conclusion += '<p class="mt-3"><strong>💡 Final Note:</strong><br>';
+            conclusion += 'Analisa adalah starting point. Yang menentukan adalah <strong>EXECUTION</strong>. ';
+            conclusion += 'Review dokumen ini setiap bulan, track progress, adjust strategy. ';
+            conclusion += 'Konsisten action + data-driven decision = sustainable growth. ';
+            conclusion += '<strong>You got this! 💪🚀</strong></p>';
+            
+            conclusion += '</div>';
+            return conclusion;
+        }
+
+        function resetAll() {
+            if (confirm('Yakin ingin mulai ulang?')) {
+                document.querySelectorAll('input, select, textarea').forEach(el => el.value = '');
+                document.getElementById('results').style.display = 'none';
+                document.getElementById('section1').style.display = 'block';
+                updateProgress(1);
+                window.scrollTo(0,0);
+            }
+        }
+
+        updateProgress(1);
+    </script>
+</body>
+</html>
